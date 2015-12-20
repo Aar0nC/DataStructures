@@ -7,18 +7,6 @@ typedef struct node{
 }node;
 
 node *linkReverse(node *head){
-    //deal with the first node
-    /**node *prev = head;
-    node *crawler = head->next;
-    node *after = head->next;
-    head->next = NULL;
-    while(crawler->next != NULL){
-        crawler->next = prev;
-        prev = crawler;
-        after = after->next;
-        crawler = after;
-    }
-    return crawler;*/
     node* new_root = 0;
     while (head) {
         node* next = head->next;
