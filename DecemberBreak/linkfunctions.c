@@ -115,4 +115,4 @@ int main(){
     listPrint(head);
     printLast(head);
     nodeClear(head);
-    }
+}
