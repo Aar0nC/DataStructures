@@ -43,4 +43,3 @@ typedef struct node{
 
 node *table[CAPACITY];
 
-//I could now make a stack with a linked list!
