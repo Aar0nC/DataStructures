@@ -18,7 +18,9 @@ Operations to code:
 ************/
 
 int compare(const void *_a, const void *_b){
-    return *(int *a)-*(int *b);
+    int *a = (int *)_a;
+    int *b = (int *)_b;
+    return *a - *b;
 }
 
 typedef struct node{
@@ -27,7 +29,7 @@ typedef struct node{
     struct node *right;
 }node;
 
-node *insert(node *root, int data){
+/*node *insert(node *root, int data){
     if(root = NULL){
         root = malloc(sizeof(node));
         root->value = data;
@@ -39,20 +41,47 @@ node *insert(node *root, int data){
     else
         root->right = insert(r>right,data);
     return root
+}*/
+
+node *buildBinaryTree(int *array, int n){
+    if(n == 0)
+        return NULL;
+    int middle = n/2;
+    node *new = malloc(sizeof(node));
+    new->value = array[middle];
+    new->left = buildBinaryTree(array, middle);
+    new->right = buildBinaryTree(array+middle+1, n-middle-1);
+    return new;
 }
 void binaryPrint(node *root){
-    if(root == NULL) return;
+    if(root == NULL)
+        return;
+    printf("%d\n", root->value);
+    binaryPrint(root->left);
+    binaryPrint(root->right);
+}
+void binaryFree(node *root){
+    //again, use recursion
+    /*if(root == NULL)
+        return;
     node *crawler = root;
-    printf("%d", root->value);
-    return binaryPrint(root = root->left);
-    return binaryPrint(root = root->right);
+    node *rootL = root->left;
+    node *rootR = root->right;
+    free(crawler);
+    binaryFree(rootL);
+    binaryFree(rootR);*/
+    if(root == NULL)
+        return;
+    binaryFree(root->left);
+    binaryFree(root->right);
+    free(root);
 }
 int main(){
-    int array[10] = {1,2,5,7,10,11,12,14,16,20};
-    int n = sizeof(a)/sizeof(a[0]);
+    int array[] = {9,4,2,6,12,15,17};
+    int n = sizeof(array)/sizeof(array[0]);
     qsort(array,n,sizeof(int), compare);
-    node *root = NULL;
-    root = insert(root);
+    node *root = buildBinaryTree(array,n);
     binaryPrint(root);
+    binaryFree(root);
     return 0;
 }
