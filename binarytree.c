@@ -1,10 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-/*Remaining:
-2. Deletion
-4. Searching
-5. Traversing
-*/
 
 int compare(const void *_a, const void *_b){
     int *a = (int *)_a;
@@ -28,12 +23,26 @@ node *buildBinaryTree(int *array, int n){
     new->right = buildBinaryTree(array+middle+1, n-middle-1);
     return new;
 }
+node *nodeInsert(node *root, int value){
+    if(root == NULL){
+        root = malloc(sizeof(node));
+        root->left = NULL;
+        root->right = NULL;
+        root->value = value;
+    }
+    else if(value > root->value)
+        root->right = nodeInsert(root->right, value);
+    else
+        root->left = nodeInsert(root->left, value);
+    return root;
+}
 void binaryPrint(node *root){
     if(root == NULL)
         return;
     printf("%d ", root->value);
     binaryPrint(root->left);
     binaryPrint(root->right);
+    printf("\n");
 }
 void binaryFree(node *root){
     if(root == NULL)
@@ -42,13 +51,39 @@ void binaryFree(node *root){
     binaryFree(root->right);
     free(root);
 }
+node *binarySearch(node *root, int value, node **parent){
+    //use recursion
+    if(root == NULL)
+        return NULL;
+    else if(root->value == value)
+        return root;
+    *parent = root;
+    if(value > root->value)
+        return binarySearch(root->right, value,parent);
+
+    else
+        return binarySearch(root->left, value,parent);
+}
+
 int main(){
-    int array[] = {1,2,5,7,10,11,12,14,16,20};
+    /*int array[] = {1,2,5,7,10,11,12,14,16,20};
     int n = sizeof(array)/sizeof(array[0]);
     qsort(array,n,sizeof(int), compare);
     node *root = buildBinaryTree(array,n);
     binaryPrint(root);
+    printf("\n");*/
+    node *parent = NULL;
+    node *second = nodeInsert(second, 33);
+    second = nodeInsert(second, 45);
+    second = nodeInsert(second, 23);
+    binaryPrint(second);
     printf("\n");
-    binaryFree(root);
+    printf("%sfound\n", binarySearch(second, 23, &parent) != NULL ? "": "not ");
+    printf("%p\n", parent);
+    printf("%d\n", binarySearch(second, 23, &parent)->value);
+    printf("%d\n", parent->right->value);
+    printf("%d\n", parent->left->value);
+    printf("%d\n", parent->value);
+    binaryFree(second);
     return 0;
 }
