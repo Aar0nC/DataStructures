@@ -42,7 +42,6 @@ void binaryPrint(node *root){
     printf("%d ", root->value);
     binaryPrint(root->left);
     binaryPrint(root->right);
-    printf("\n");
 }
 void binaryFree(node *root){
     if(root == NULL)
@@ -52,38 +51,37 @@ void binaryFree(node *root){
     free(root);
 }
 node *binarySearch(node *root, int value, node **parent){
-    //use recursion
     if(root == NULL)
         return NULL;
-    else if(root->value == value)
+    if(root->value == value)
         return root;
     *parent = root;
     if(value > root->value)
         return binarySearch(root->right, value,parent);
-
     else
         return binarySearch(root->left, value,parent);
 }
 
 int main(){
-    /*int array[] = {1,2,5,7,10,11,12,14,16,20};
+    int array[] = {1,2,5,7,10,11,12,14,16,20};
     int n = sizeof(array)/sizeof(array[0]);
     qsort(array,n,sizeof(int), compare);
     node *root = buildBinaryTree(array,n);
-    binaryPrint(root);
-    printf("\n");*/
     node *parent = NULL;
-    node *second = nodeInsert(second, 33);
+    binaryPrint(root);
+    printf("\n");
+    printf("%sfound\n", binarySearch(root,16, &parent) != NULL ? "": "not ");
+    binaryFree(root);
+    
+    node *parent2 = NULL;
+    node *second = NULL;
+    second = nodeInsert(second, 33);
     second = nodeInsert(second, 45);
     second = nodeInsert(second, 23);
+    second = nodeInsert(second, 99);
     binaryPrint(second);
     printf("\n");
-    printf("%sfound\n", binarySearch(second, 23, &parent) != NULL ? "": "not ");
-    printf("%p\n", parent);
-    printf("%d\n", binarySearch(second, 23, &parent)->value);
-    printf("%d\n", parent->right->value);
-    printf("%d\n", parent->left->value);
-    printf("%d\n", parent->value);
+    printf("%sfound\n", binarySearch(second, 23, &parent2) != NULL ? "": "not ");
     binaryFree(second);
     return 0;
 }
