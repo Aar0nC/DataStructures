@@ -50,6 +50,17 @@ void binaryFree(node *root){
     binaryFree(root->right);
     free(root);
 }
+int binaryDepth(node *root){
+    if(root == NULL)
+        return 0 ;
+    int ldepth = binaryDepth(root->left);
+    int rdepth = binaryDepth(root->right);
+    if(ldepth > rdepth){
+        return 1 + ldepth;
+    }
+    else
+        return 1 + rdepth;
+}
 node *binarySearch(node *root, int value, node **parent){
     if(root == NULL)
         return NULL;
@@ -71,6 +82,7 @@ int main(){
     binaryPrint(root);
     printf("\n");
     printf("%sfound\n", binarySearch(root,16, &parent) != NULL ? "": "not ");
+    printf("depth is %d\n", binaryDepth(root));
     binaryFree(root);
     
     node *parent2 = NULL;
@@ -82,6 +94,7 @@ int main(){
     binaryPrint(second);
     printf("\n");
     printf("%sfound\n", binarySearch(second, 23, &parent2) != NULL ? "": "not ");
+    printf("depth is %d\n", binaryDepth(second)); 
     binaryFree(second);
     return 0;
 }
