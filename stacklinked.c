@@ -1,39 +1,42 @@
 #include <stdlib.h>
 #include <stdio.h>
 //a stack implemented with linked lists; more space efficient, less time efficient
-//O(n) access, instead of O(1) access.
+//Using a head pointer, push can be optimized to O(1).
+
 typedef struct stack{
     int value;
+    struct stack *top;
     struct stack *next;
 }stack;
 
-stack *stackInit(){
-    stack *s = malloc(sizeof(stack));
-    s->value = 0;
-    s->next = NULL;
-    return s;
-}
 int stackTop(stack *s){
-    while(s)
-        s = s->next;
-    return s->value;
+    return s->top->value;
 }
-void stackPush(stack *s, int n){
-    if(!s) return;
-    while(s->next)
-        s = s->next;
+stack *stackPush(stack *s, int n){
+    if(s == NULL){ //removes the stackInit() function
+        stack *s = malloc(sizeof(stack));
+        s->value = n;
+        s->next = NULL;
+        s->top = s;
+        return s;
+    }
+    //use the top pointer now
     stack *new = malloc(sizeof(stack));
     new->value = n;
     new->next = NULL;
-    s->next = new;
+    s->top->next = new;
+    s->top = new;
+    return s;
 }
-void stackPop(stack *s){
+stack *stackPop(stack *s){
     stack *crawler = s;
     while((crawler->next)->next){
         crawler = crawler->next;
     }
     free(crawler->next);
     crawler->next = NULL;
+    s->top = crawler;
+    return s;
 }
 void stackClear(stack *s){
     while(s){
@@ -50,10 +53,9 @@ int stackSum(stack *s){
     }
     return sum;
 }
-void listPrint(stack *head){
+void listPrint(stack *head){ //O(n)
     if(head == NULL) return;
     printf("Printing list: ");
-    head = head->next;
     while(head != NULL){
         printf("%d ", head->value);
         head = head->next;
@@ -61,21 +63,22 @@ void listPrint(stack *head){
     printf("\n");
 }
 int main(){
-    stack *stackZero = stackInit();
+    stack *stackZero = NULL;
     int flag = 1;
     while(flag){
         int number;
         scanf("%d",&number);
         if(number > 0)
-            stackPush(stackZero, number);
+            stackZero = stackPush(stackZero, number);
         if(number == 0){
-            stackPop(stackZero);
+            stackZero = stackPop(stackZero);
         }
         else if(number < 0)
             flag = 0;
     }
     listPrint(stackZero);
     printf("sum is %d\n",stackSum(stackZero));
+    printf("top is %d\n",stackTop(stackZero));
     stackClear(stackZero);
     return 0;
 }
